@@ -1,11 +1,14 @@
-# Experiments with automatic annotation on the GINCO dataset
+# Experiments with the LLM Teacher-Student Framework for model development without manually-annotated training data on the GINCO genre dataset
+
+This repository contains the code used in the experiments presented in Chapter 5 of the doctoral thesis:
+
+Kuzman Pungeršek, Taja. "Robust multilingual automatic genre identification in texts." PhD dissertation. Jožef Stefan International Postgraduate School. 2026.
+
+Licensed under the MIT License. See LICENSE. If you use this code, please cite the thesis, mentioned above.
+
+## Overview
 
 The GINCO dataset is fully manually annotated by 2 annotators. We compare the predictions by LLMs with the independent annotations of the 2 annotators.
-
-Note: the final gold labels that are present in the GINCO dataset are in some cases different than the labels of either annotator - after annotating separately, the annotators discussed the cases in which they did not agree and decide for the final label together. Also, they introduced some labels later, at the discussion stage -- this is the case of Opinionated News which does not occur in the separate annotations of the annotators, but was later introduced when they decided for the final labels. -> We did the following interventions to the data prior to experiments and evaluation:
-- removed instances with final labels that were later decided upon: *Opinionated News*, *Correspondence*, *Call*
-- removed instances where one of the annotators marked the text as "unsuitable"
-- removed instances where the final labels are different than the labels proposed by any of the two annotators (this indicates that the annotators later changed their mind and agreed to a completely different label)
 
 We then automatically annotate the X-GENRE training dataset with genre labels, using GPT-5 (the best performing model based on comparison with human annotators) and the label descriptions. Then we fine-tune base-sized XLM-RoBERTa model on the automatically annotated training dataset and compare its performance with the X-GENRE classifier - a model that was fine-tuned on manually-annotated labels.
 
@@ -19,6 +22,11 @@ We test the models on:
 - X-GINCO: test set in 10 languages - note that it does not include label "Other", and that the test set is balanced by labels (~l0 labels per genre per language)
 
 ## Mapping the GINCO labels to X-GENRE
+
+Note: the final gold labels that are present in the GINCO dataset are in some cases different than the labels of either annotator - after annotating separately, the annotators discussed the cases in which they did not agree and decide for the final label together. Also, they introduced some labels later, at the discussion stage -- this is the case of Opinionated News which does not occur in the separate annotations of the annotators, but was later introduced when they decided for the final labels. -> We did the following interventions to the data prior to experiments and evaluation:
+- removed instances with final labels that were later decided upon: *Opinionated News*, *Correspondence*, *Call*
+- removed instances where one of the annotators marked the text as "unsuitable"
+- removed instances where the final labels are different than the labels proposed by any of the two annotators (this indicates that the annotators later changed their mind and agreed to a completely different label)
 
 Since GINCO labels were shown to be problematic for the classifier, I extend the experiments to the X-GENRE schema. I map the labels provided by the two annotators from GINCO to the X-GENRE schema and use the LLM with the prompt that contains the description of the X-GENRE labels to automatically annotate the instances.
 
